@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agendas — Sesiones de Homologación LADM-COL POT · Popayán</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #EDECEA;
+    color: #1a1a1a;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── CABECERA GENERAL ── */
+  .doc-header {
+    background: #0F2B4A;
+    color: #fff;
+    padding: 2.5rem 3rem 2rem;
+    border-bottom: 4px solid #C07A10;
+  }
+  .doc-header-tag {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7FB3D9;
+    margin-bottom: 0.5rem;
+  }
+  .doc-header-title {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  .doc-header-sub {
+    font-size: 12px;
+    color: #A8C8E8;
+    margin-bottom: 1.5rem;
+  }
+  .doc-header-meta {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 1rem;
+    font-size: 11px;
+    color: #7FB3D9;
+  }
+  .doc-header-meta strong { display: block; color: #fff; font-size: 12px; }
+
+  /* ── AVISO PREVIO ── */
+  .aviso-global {
+    background: #FFF8E6;
+    border-left: 5px solid #C07A10;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 2rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: #5A3D00;
+  }
+  .aviso-global strong { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.35rem; color: #C07A10; }
+
+  /* ── ÍNDICE ── */
+  .indice {
+    margin: 0 2rem 1.5rem;
+    background: #fff;
+    border: 0.5px solid #D5D2CB;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+  }
+  .indice h3 { font-size: 11px; font-weight: 700; color: #0F2B4A; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .indice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4px 20px; }
+  .indice-item { font-size: 11px; color: #2C6FAD; text-decoration: none; display: flex; gap: 6px; align-items: baseline; }
+  .indice-item:hover { text-decoration: underline; }
+  .indice-fecha { font-size: 10px; color: #999; white-space: nowrap; }
+
+  /* ── AGENDA CARD ── */
+  .agenda-wrap { padding: 0 2rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+  .agenda-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    overflow: hidden;
+    border: 0.5px solid #D5D2CB;
+    page-break-inside: avoid;
+  }
+
+  .agenda-card-header {
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 0.5px solid #E8E5DE;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: start;
+  }
+  .agenda-num {
+    background: #0F2B4A;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .agenda-title-block {}
+  .agenda-uab {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0F2B4A;
+    line-height: 1.3;
+  }
+  .agenda-desc {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+  }
+  .agenda-datetime {
+    text-align: right;
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .agenda-datetime .dia { font-weight: 700; color: #0F2B4A; font-size: 12px; display: block; }
+  .agenda-datetime .hora { color: #2C6FAD; font-weight: 600; }
+
+  /* Participantes */
+  .participantes-bar {
+    background: #F7F6F2;
+    border-bottom: 0.5px solid #E8E5DE;
+    padding: 0.6rem 1.5rem;
+    font-size: 11px;
+    color: #555;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .participantes-label { font-weight: 700; color: #0F2B4A; white-space: nowrap; }
+  .participante-chip {
+    background: #DDEAF7;
+    color: #1A4D80;
+    border-radius: 3px;
+    padding: 1px 7px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .participante-chip.coord { background: #D4F0E6; color: #0D5C42; }
+
+  /* Cuerpo */
+  .agenda-body { padding: 1.25rem 1.5rem; }
+
+  /* Objetivo */
+  .objetivo-box {
+    background: #F0EDE8;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 12px;
+    color: #333;
+  }
+  .objetivo-box strong { display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin-bottom: 0.3rem; }
+
+  /* Actividades */
+  .actividades-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.75rem;
+  }
+
+  .actividad {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 0 10px;
+    padding: 0.65rem 0;
+    border-bottom: 0.5px solid #F0EDE8;
+    align-items: start;
+  }
+  .actividad:last-child { border-bottom: none; }
+
+  .act-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .act-num.nav  { background: #0F2B4A; }
+  .act-num.prep { background: #2C6FAD; }
+  .act-num.tec  { background: #1A9068; }
+  .act-num.rrr  { background: #C07A10; }
+  .act-num.cier { background: #5C42CC; }
+
+  .act-content {}
+  .act-titulo { font-size: 12px; font-weight: 700; color: #222; line-height: 1.4; }
+  .act-detalle { font-size: 11px; color: #666; margin-top: 2px; line-height: 1.5; }
+
+  .act-tiempo {
+    font-size: 10px;
+    color: #aaa;
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+
+  /* Nota técnica al pie de la card */
+  .nota-tecnica {
+    background: #FFF0F0;
+    border-left: 3px solid #B03A1A;
+    padding: 0.6rem 1rem;
+    margin-top: 1rem;
+    border-radius: 0 5px 5px 0;
+    font-size: 11px;
+    color: #6A1A0A;
+  }
+  .nota-tecnica strong { text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; display: block; margin-bottom: 2px; }
+
+  /* Pendiente */
+  .pendiente-banner {
+    background: #F7F6F2;
+    border: 1.5px dashed #D5D2CB;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pendiente-icon { font-size: 24px; }
+  .pendiente-text { font-size: 13px; color: #888; }
+  .pendiente-text strong { display: block; color: #0F2B4A; font-size: 14px; }
+
+  /* Footer */
+  .doc-footer {
+    margin: 0 2rem;
+    padding: 1rem 0 2rem;
+    border-top: 0.5px solid #D5D2CB;
+    font-size: 10px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .agenda-wrap { padding: 0 0 2rem; }
+    .aviso-global, .indice { margin: 1rem 0; }
+    .agenda-card { box-shadow: none; border: 1px solid #ccc; margin-bottom: 1rem; }
+    .doc-header { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CABECERA -->
+<div class="doc-header">
+  <div class="doc-header-tag">Municipio de Popayán · Revisión y Ajuste POT · LADM-COL v2.0.0</div>
+  <div class="doc-header-title">Agendas de Trabajo — Sesiones de Homologación al Modelo LADM-COL POT</div>
+  <div class="doc-header-sub">Identificación y caracterización de capas temáticas homologables · 6 sesiones programadas + 1 pendiente</div>
+  <div class="doc-header-meta">
+    <span><strong>Profesional LADM COL</strong>Ing. Juan Carlos Dueñas Ramírez</span>
+    <span><strong>Período</strong>Junio – Julio 2025</span>
+    <span><strong>Modelo base</strong>LADM_COL_v_2_0_0_Ext_POT</span>
+    <span><strong>Tipo de sesión</strong>Técnica · No incluye orientación jurídica ni temática</span>
+  </div>
+</div>
+
+<!-- AVISO GLOBAL -->
+<div class="aviso-global">
+  <strong>⚠ Nota sobre el alcance del acompañamiento técnico</strong>
+  El acompañamiento ofrecido en estas sesiones tiene carácter estrictamente técnico y está orientado a la homologación de información espacial y alfanumérica al modelo LADM-COL POT. <strong>No contempla orientación de índole jurídica ni temática.</strong> Las definiciones normativas y la validación conceptual de cada capa son responsabilidad de los profesionales temáticos de cada dimensión.
+</div>
+
+<!-- ÍNDICE -->
+<div class="indice">
+  <h3>Sesiones programadas</h3>
+  <div class="indice-grid">
+    <a class="indice-item" href="#s1"><span>01 · Suelo de protección ambiental</span><span class="indice-fecha">Mar 30 jun · 9:00 am</span></a>
+    <a class="indice-item" href="#s2"><span>02 · Suelo de protección patrimonio y servicios públicos</span><span class="indice-fecha">Mié 1 jul · 9:00 am</span></a>
+    <a class="indice-item" href="#s3"><span>03 · Sistemas generales</span><span class="indice-fecha">Mié 1 jul · 2:00 pm</span></a>
+    <a class="indice-item" href="#s4"><span>04 · Zonificación de suelo rural</span><span class="indice-fecha">Mié 1 jul · 3:30 pm</span></a>
+    <a class="indice-item" href="#s5"><span>05 · Zonificación de amenaza y condición de riesgo</span><span class="indice-fecha">Vie 3 jul · 9:00 am</span></a>
+    <a class="indice-item" href="#s6"><span>06 · Clasificación del suelo</span><span class="indice-fecha">Vie 3 jul · 10:00 am</span></a>
+    <a class="indice-item" href="#s7"><span>07 · Tratamientos urbanísticos y áreas de actividad</span><span class="indice-fecha">Fecha por confirmar</span></a>
+  </div>
+</div>
+
+<!-- ═══════════ AGENDAS ═══════════ -->
+<div class="agenda-wrap">
+
+<!-- ── SESIÓN 1 ── -->
+<div class="agenda-card" id="s1">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 01</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Suelo de Protección Ambiental</div>
+      <div class="agenda-desc">UAB: POT_UAB_SueloProteccionUrbano (Ambiental) · Dimensión Ambiental</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Martes 30 de junio</span>
+      <span class="hora">9:00 am</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Elizabeth</span>
+    <span class="participante-chip">Paola</span>
+    <span class="participante-chip">Luis</span>
+    <span class="participante-chip">Claudia</span>
+    <span class="participante-chip">Dimensión Ambiental</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar y caracterizar las capas temáticas del proceso de formulación del POT que sean potencialmente homologables al objeto territorial <strong>Suelo de Protección Ambiental</strong> del modelo LADM-COL POT, y orientar técnicamente su adecuación estructural para la carga al modelo intermedio.
+    </div>
+
+    <div class="actividades-title">Actividades</div>
+
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento previo</div>
+        <div class="act-detalle">Confirmación de descarga y lectura previa del material compartido: Guía de diligenciamiento RRR, Formulario Excel RRR y modelo de datos LADM-COL POT. Se resolverán brevemente las inquietudes conceptuales identificadas con anticipación por los participantes.</div>
+      </div>
+      <div class="act-tiempo">15 min</div>
+    </div>
+
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario de capas homologables al modelo</div>
+        <div class="act-detalle">Cada temático presenta las capas producidas en el proceso de formulación que considera candidatas a homologar al objeto territorial de esta sesión. Se construye colectivamente el listado definitivo, verificando que las capas correspondan exclusivamente a insumos del proceso de formulación del POT — no a cartografía base ni a información externa sin validación.</div>
+      </div>
+      <div class="act-tiempo">30 min</div>
+    </div>
+
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud de atributos</div>
+        <div class="act-detalle">Para cada capa identificada, se verifica que la tabla de atributos esté completa: sin campos vacíos obligatorios, sin valores nulos en campos clave, y con geometrías válidas en EPSG:9377 (MAGNA-SIRGAS / CTM-12). El SIG de apoyo documenta las inconsistencias encontradas.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de atributos homologables al modelo LADM-COL POT</div>
+        <div class="act-detalle">Cotejo entre los atributos de cada capa y los campos del modelo: clase UAB correspondiente, tipo de geometría esperado, y dominios válidos definidos en el archivo LADM_COL_v_2_0_0_Ext_POT.ili. Se establece la tabla de equivalencias campo a campo.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+
+    <div class="actividad">
+      <div class="act-num rrr">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento del Formulario RRR</div>
+        <div class="act-detalle">Inicio del diligenciamiento del Formulario RRR por cada capa homologada: identificación del tipo de RRR (Derecho, Restricción o Responsabilidad), documentación de la norma fuente y el agente, y registro de la Fuente Administrativa obligatoria. Los temáticos completan las secciones A a E; la sección F (verificación SIG) queda a cargo del SIG de apoyo.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+
+    <div class="actividad">
+      <div class="act-num cier">6</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Registro de compromisos individuales con fecha de entrega: formularios RRR completos y capas ajustadas. Definición de canal de comunicación para consultas técnicas posteriores a la sesión. Indicación de la próxima sesión si aplica.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la definición de perímetros de protección ambiental, la validación normativa de las categorías de manejo, ni la orientación sobre el régimen de usos del suelo. Estas definiciones son competencia del equipo temático de la dimensión ambiental.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 2 ── -->
+<div class="agenda-card" id="s2">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 02</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Suelo de Protección Patrimonio y Servicios Públicos</div>
+      <div class="agenda-desc">UAB: POT_UAB_SueloProteccionUrbano (Patrimonio / Servicios_Publicos) · Dimensión Funcional</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Miércoles 1 de julio</span>
+      <span class="hora">9:00 am</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Isabel</span>
+    <span class="participante-chip">Alejandra</span>
+    <span class="participante-chip">Alexandra</span>
+    <span class="participante-chip">Dimensión Funcional</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar y caracterizar las capas del proceso de formulación homologables a los objetos territoriales <strong>Suelo de Protección Patrimonio</strong> y <strong>Suelo de Protección Servicios Públicos</strong>, verificar la completitud de sus atributos y orientar el diligenciamiento del Formulario RRR correspondiente.
+    </div>
+    <div class="actividades-title">Actividades</div>
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento previo</div>
+        <div class="act-detalle">Confirmación de lectura previa de la Guía RRR y el Formulario Excel. Resolución breve de inquietudes conceptuales identificadas con anticipación.</div>
+      </div>
+      <div class="act-tiempo">15 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario de capas homologables al modelo</div>
+        <div class="act-detalle">Presentación y revisión de las capas candidatas para Patrimonio (bienes de interés cultural, centros históricos) y Servicios Públicos (plantas de tratamiento, depósitos, corredores de infraestructura). Verificación de que correspondan exclusivamente al proceso de formulación del POT.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud de atributos</div>
+        <div class="act-detalle">Verificación de campos completos, valores en dominios válidos y geometrías correctas en EPSG:9377. Documentación de inconsistencias por el SIG de apoyo.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de atributos homologables al modelo LADM-COL POT</div>
+        <div class="act-detalle">Cotejo con los campos de POT_UAB_SueloProteccionUrbano subtipo Patrimonio y Servicios_Publicos. Construcción de tabla de equivalencias. Nota: ambos subtipos comparten la misma clase UAB — se distinguen por el valor del atributo Uso_Principal.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento del Formulario RRR</div>
+        <div class="act-detalle">Inicio del diligenciamiento por capa: tipo de RRR, norma fuente, agente y Fuente Administrativa obligatoria. Secciones A a E a cargo del temático; sección F (SIG) se completa en revisión posterior.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num cier">6</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Registro de compromisos con fecha de entrega. Canal de consultas técnicas para seguimiento posterior.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la declaratoria de bienes de interés cultural ni la definición de áreas de influencia patrimonial. Esas determinaciones son competencia del equipo temático y de las autoridades competentes en patrimonio.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 3 ── -->
+<div class="agenda-card" id="s3">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 03</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Sistemas Generales: Equipamiento, Espacio Público, Servicios Públicos y Movilidad</div>
+      <div class="agenda-desc">UAB: POT_UAB_SistemasGenerales · Dimensión Funcional</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Miércoles 1 de julio</span>
+      <span class="hora">2:00 pm</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Alexandra</span>
+    <span class="participante-chip">Sylvana</span>
+    <span class="participante-chip">Isabel</span>
+    <span class="participante-chip">Alejandra</span>
+    <span class="participante-chip">César</span>
+    <span class="participante-chip">Itzel</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar y caracterizar las capas del proceso de formulación homologables al objeto territorial <strong>Sistemas Generales</strong>, abarcando los cuatro componentes del modelo: Equipamientos, Espacio Público, Servicios Públicos y Vías/Movilidad. Por la amplitud temática, se prioriza construir el inventario completo y avanzar en la tabla de equivalencias.
+    </div>
+    <div class="actividades-title">Actividades</div>
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento previo</div>
+        <div class="act-detalle">Confirmación de lectura previa del material. Por la diversidad de componentes en esta sesión, se recomienda que cada participante traiga identificadas sus capas clasificadas por componente (Equipamientos / Espacio Público / Servicios Públicos / Vías) antes de la reunión.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario de capas por componente</div>
+        <div class="act-detalle">Presentación organizada por componente. Para cada capa: nombre, estado (existente / proyectado), tipo de geometría, y fuente del dato. Se construye la matriz de inventario en tiempo real. Atención especial al campo Estado del modelo (POT_SistemasGeneralesEstadoTipo: Existente / Proyectado) — es obligatorio y condiciona el tratamiento RRR.</div>
+      </div>
+      <div class="act-tiempo">35 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud y homologación de atributos</div>
+        <div class="act-detalle">Cotejo de atributos con los campos del modelo: Tipo_Sistema_General (valor exacto del dominio POT_SistemasGeneralesTipo), Detalle_Sistema_General, Nivel (POT_SistemasGeneralesNivelTipo) y Estado. Verificación de geometrías: equipamientos y espacio público → polígono; vías y redes → línea; puntos singulares → punto.</div>
+      </div>
+      <div class="act-tiempo">30 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento inicial del Formulario RRR</div>
+        <div class="act-detalle">Inicio del diligenciamiento para las capas priorizadas. Dado el volumen de capas esperado en esta sesión, se acuerda un orden de prioridad y se deja un plazo de entrega de formularios completos para las capas no abordadas en sesión.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num cier">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Lista de capas con formulario pendiente, responsable y fecha máxima de entrega. Canal de consultas para seguimiento técnico.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la definición de estándares de equipamiento por habitante, el diseño de redes de servicios públicos ni la jerarquización vial. El alcance técnico se limita a la correcta clasificación y estructuración de la información existente en el modelo LADM.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 4 ── -->
+<div class="agenda-card" id="s4">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 04</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Zonificación de Suelo Rural</div>
+      <div class="agenda-desc">UAB: POT_UAB_ZonificacionSueloRural · Dimensión Suelos</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Miércoles 1 de julio</span>
+      <span class="hora">3:30 pm</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Carlos Martínez</span>
+    <span class="participante-chip">María Fernanda</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar y caracterizar las capas del proceso de formulación homologables al objeto territorial <strong>Zonificación de Suelo Rural</strong>, con énfasis en la correcta asignación de la categoría rural (POT_CategoriaRuralTipo) y los usos del suelo (principal, compatible, condicionado y prohibido) requeridos por el modelo.
+    </div>
+    <div class="actividades-title">Actividades</div>
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento previo</div>
+        <div class="act-detalle">Confirmación de lectura de la Guía RRR, con especial atención a la Sección 6 — dominio POT_CategoriaRuralTipo (tres niveles jerárquicos) y POT_UsoSueloRuralTipo. Resolución de inquietudes previas.</div>
+      </div>
+      <div class="act-tiempo">15 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario de capas homologables</div>
+        <div class="act-detalle">Presentación de capas rurales candidatas: producción agropecuaria, forestal, minería, suburbano, centros poblados rurales, áreas de importancia ecosistémica, patrimonio cultural rural, amenaza y riesgo no mitigable rural. Verificación de correspondencia con el proceso de formulación.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud y homologación de atributos</div>
+        <div class="act-detalle">El modelo exige para cada UAB de zonificación rural: Uso_Principal (obligatorio), Tipo_Categoria_Rural (opcional pero recomendado), Detalle_Uso_Principal (texto obligatorio), y listas de usos compatibles, condicionados y prohibidos (mínimo 1 valor cada una). Se revisa la disponibilidad de esta información en las capas existentes.</div>
+      </div>
+      <div class="act-tiempo">30 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento del Formulario RRR</div>
+        <div class="act-detalle">Diligenciamiento por capa. Énfasis en documentar correctamente las Restricciones (usos prohibidos y condicionados) y las Responsabilidades (obligaciones de manejo ambiental o productivo según Plan de Manejo de la CRC o normativa sectorial).</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num cier">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Compromisos de entrega de formularios y capas ajustadas. Dada la hora de la sesión (3:30 pm), se acuerda un plazo razonable para la completitud del material.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la definición de categorías de ordenamiento rural ni la validación de usos del suelo con las autoridades ambientales. El acompañamiento técnico se limita a la estructuración correcta de la información en el modelo LADM.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 5 ── -->
+<div class="agenda-card" id="s5">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 05</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Zonificación de Amenaza y Condición de Riesgo</div>
+      <div class="agenda-desc">UAB: POT_UAB_ZonificacionAmenaza · POT_UAB_AreaCondicionAmenaza · POT_UAB_AreaCondicionRiesgo</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Viernes 3 de julio</span>
+      <span class="hora">9:00 am</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Rogelio</span>
+    <span class="participante-chip">Nerly</span>
+    <span class="participante-chip">Leandro</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar las capas del proceso de formulación homologables a los tres objetos territoriales de gestión del riesgo: <strong>Zonificación de Amenaza</strong>, <strong>Área en Condición de Amenaza</strong> y <strong>Área en Condición de Riesgo</strong>. Esta sesión aborda la distinción conceptual y técnica entre los tres objetos, que con frecuencia se confunden.
+    </div>
+    <div class="actividades-title">Actividades</div>
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento y aclaración conceptual clave</div>
+        <div class="act-detalle">Verificación de lectura previa. Aclaración técnica de las diferencias entre los tres objetos del modelo: Zonificación de Amenaza (categorización del peligro sin análisis de exposición), Área en Condición de Amenaza (amenaza alta/media con desarrollo urbanístico previsto pero aún no ejecutado), y Área en Condición de Riesgo (amenaza alta con elementos expuestos ya existentes). Esta distinción es crítica para la correcta clasificación de las capas.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario y clasificación de capas por objeto territorial</div>
+        <div class="act-detalle">Presentación de las capas disponibles y asignación a cada uno de los tres objetos del modelo. Verificación de que se trate de estudios producidos en el proceso de formulación del POT conforme al Decreto 1077 de 2015. Se registra el fenómeno de amenaza de cada capa (POT_FenomenoAmenazaTipo) — con prioridad para Popayán: movimientos en masa, avenida torrencial, inundación, volcánico y sísmico.</div>
+      </div>
+      <div class="act-tiempo">30 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud y homologación de atributos</div>
+        <div class="act-detalle">Verificación de campos obligatorios: Fenomeno (obligatorio en los tres objetos), Categoria_Amenaza (obligatorio en ZonificacionAmenaza y AreaCondicionAmenaza), Medida_Intervencion (obligatorio en AreaCondicionAmenaza y AreaCondicionRiesgo), y Priorizacion. Se documenta el estado actual de cada atributo en las capas existentes.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento del Formulario RRR</div>
+        <div class="act-detalle">Diligenciamiento por capa. Para amenaza y riesgo predominan las Restricciones (uso del suelo condicionado o prohibido) y las Responsabilidades (obligaciones de monitoreo, alerta temprana u obras de mitigación). Documentar la norma exacta: Dcto. 1077/2015, estudios de detalle, planes de gestión del riesgo municipal.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num cier">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Compromisos de ajuste y entrega. Identificación de capas que requieren estudios de detalle adicionales antes de poder homologarse al modelo.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la validación técnica de los estudios de amenaza y riesgo, la determinación de niveles de amenaza, ni la definición de medidas de mitigación. El acompañamiento se limita a la correcta estructuración de la información existente en el modelo LADM conforme al Decreto 1077 de 2015.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 6 ── -->
+<div class="agenda-card" id="s6">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 06</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Clasificación del Suelo</div>
+      <div class="agenda-desc">UAB: POT_UAB_ClasificacionSuelo · Dimensión Suelos</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Viernes 3 de julio</span>
+      <span class="hora">10:00 am</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Alexandra</span>
+    <span class="participante-chip">Carlos</span>
+    <span class="participante-chip">Claudia</span>
+    <span class="participante-chip">César</span>
+  </div>
+  <div class="agenda-body">
+    <div class="objetivo-box">
+      <strong>Objetivo de la sesión</strong>
+      Identificar y estructurar las capas del proceso de formulación homologables al objeto territorial <strong>Clasificación del Suelo</strong> (urbano, rural, expansión urbana), que constituye la base estructural del modelo LADM-COL POT y es prerrequisito para la correcta homologación de los demás objetos territoriales.
+    </div>
+    <div class="actividades-title">Actividades</div>
+    <div class="actividad">
+      <div class="act-num prep">1</div>
+      <div class="act-content">
+        <div class="act-titulo">Verificación de alistamiento previo</div>
+        <div class="act-detalle">Confirmación de lectura de la Guía RRR. Recordatorio: la Clasificación del Suelo es el objeto territorial estructurante — todos los demás objetos deben estar espacialmente contenidos o relacionados con esta clasificación.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">2</div>
+      <div class="act-content">
+        <div class="act-titulo">Inventario de capas homologables</div>
+        <div class="act-detalle">Identificación de la capa o capas que definen los perímetros de suelo urbano, rural y de expansión urbana del POT. Verificación de que sean el resultado del proceso de formulación y cuenten con el acto administrativo de adopción como fuente administrativa.</div>
+      </div>
+      <div class="act-tiempo">20 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num tec">3</div>
+      <div class="act-content">
+        <div class="act-titulo">Revisión de completitud y homologación de atributos</div>
+        <div class="act-detalle">El modelo exige un único campo obligatorio: Tipo_Clasificacion_Suelo (Urbano / Rural / Expansion_Urbana). Se revisa que cada polígono tenga este campo correctamente diligenciado, sin superposiciones entre clases, y que el dominio coincida exactamente con el valor del modelo. Verificación de topología: sin vacíos ni traslapes entre los tres tipos.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num rrr">4</div>
+      <div class="act-content">
+        <div class="act-titulo">Diligenciamiento del Formulario RRR</div>
+        <div class="act-detalle">Para la Clasificación del Suelo, los RRR típicos son Derechos (derecho a urbanizar en suelo de expansión, condicionado a plan parcial) y Restricciones (prohibición de urbanizar en suelo rural, excepto en categorías de desarrollo restringido). La Fuente Administrativa es el Acuerdo de adopción del POT.</div>
+      </div>
+      <div class="act-tiempo">25 min</div>
+    </div>
+    <div class="actividad">
+      <div class="act-num cier">5</div>
+      <div class="act-content">
+        <div class="act-titulo">Acuerdos, compromisos y cierre</div>
+        <div class="act-detalle">Compromisos de entrega. Recordatorio: la capa de Clasificación del Suelo aprobada es la base para validar la consistencia espacial de todas las demás capas del POT.</div>
+      </div>
+      <div class="act-tiempo">10 min</div>
+    </div>
+    <div class="nota-tecnica">
+      <strong>⚠ Alcance del acompañamiento</strong>
+      Esta sesión no contempla la revisión de los criterios de delimitación del perímetro urbano ni la validación del área de expansión. El acompañamiento técnico se limita a la verificación de la estructura del dato para su carga al modelo LADM.
+    </div>
+  </div>
+</div>
+
+<!-- ── SESIÓN 7 — PENDIENTE ── -->
+<div class="agenda-card" id="s7">
+  <div class="agenda-card-header">
+    <div class="agenda-num">SESIÓN 07</div>
+    <div class="agenda-title-block">
+      <div class="agenda-uab">Tratamientos Urbanísticos y Áreas de Actividad</div>
+      <div class="agenda-desc">UAB: POT_UAB_TratamientoUrbanistico · POT_UAB_AreasActividad · Fecha por confirmar</div>
+    </div>
+    <div class="agenda-datetime">
+      <span class="dia">Fecha por confirmar</span>
+      <span class="hora">—</span>
+    </div>
+  </div>
+  <div class="participantes-bar">
+    <span class="participantes-label">Participantes:</span>
+    <span class="participante-chip coord">Ing. Dueñas (Exp. LADM)</span>
+    <span class="participante-chip">Itzel</span>
+    <span class="participante-chip">Alexandra</span>
+    <span class="participante-chip">César</span>
+  </div>
+  <div class="agenda-body">
+    <div class="pendiente-banner">
+      <div class="pendiente-icon">📅</div>
+      <div class="pendiente-text">
+        <strong>Agenda pendiente de programación</strong>
+        La agenda detallada de esta sesión se publicará una vez se confirme la fecha. El contenido seguirá la misma estructura de las sesiones anteriores, con énfasis en los atributos específicos de POT_UAB_TratamientoUrbanistico (Tipo_Tratamiento_Urbanistico) y POT_UAB_AreasActividad (Uso_Principal, usos compatibles, condicionados y prohibidos). Se recomienda a los participantes revisar desde ya los dominios POT_TratamientoUrbanisticoTipo y POT_AreaActividadTipo en la Sección 6 de la Guía RRR.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /agenda-wrap -->
+
+<!-- INSTRUCCIONES PREVIAS COMUNES -->
+<div style="margin: 0 2rem 2rem; background:#fff; border-radius:10px; border:0.5px solid #D5D2CB; overflow:hidden;">
+  <div style="background:#0F2B4A; color:#fff; padding:0.85rem 1.5rem; font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;">
+    Preparación previa — Aplica a todas las sesiones
+  </div>
+  <div style="padding:1.25rem 1.5rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;">
+
+    <div style="border-left:3px solid #2C6FAD; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#2C6FAD; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">1 · Descarga del material</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">Descargue desde el Drive compartido: Guía de diligenciamiento RRR (PDF), Formulario RRR (Excel) y modelo de datos LADM_COL_v_2_0_0_Ext_POT. Tenga el material disponible durante la sesión.</div>
+    </div>
+
+    <div style="border-left:3px solid #1A9068; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#1A9068; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">2 · Lectura previa de la guía</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">Lea la Guía RRR completa antes de la sesión, con especial atención a las secciones 2 (tipos de RRR), 3 (clases UAB), 5 (Fuente Administrativa) y 6 (dominios del modelo). Registre sus inquietudes por escrito para plantearlas al inicio de la sesión.</div>
+    </div>
+
+    <div style="border-left:3px solid #C07A10; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#C07A10; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">3 · Inventario previo de capas</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">Identifique y liste las capas geográficas de su tema que podrían corresponder al objeto territorial de la sesión. Verifique que sean capas producidas en el proceso de formulación del POT — no cartografía base ni información de fuentes externas sin validación.</div>
+    </div>
+
+    <div style="border-left:3px solid #B03A1A; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#B03A1A; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">4 · Fuentes normativas</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">Tenga identificadas las normas que respaldan cada capa (Leyes, Decretos, Acuerdos, Resoluciones). Cada RRR debe tener al menos una Fuente Administrativa obligatoria en el modelo — sin ella, la carga es rechazada por el validador.</div>
+    </div>
+
+    <div style="border-left:3px solid #5C42CC; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#5C42CC; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">5 · Siga las instrucciones del formulario</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">Use siempre las listas desplegables del formulario. No escriba valores manualmente en los campos con lista — cualquier variación en la capitalización o los caracteres genera error de carga al modelo. La pestaña INSTRUCCIONES del Excel explica el paso a paso.</div>
+    </div>
+
+    <div style="border-left:3px solid #888; padding-left:0.85rem;">
+      <div style="font-size:10px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;">6 · Alcance del acompañamiento</div>
+      <div style="font-size:11px; color:#555; line-height:1.5;">El acompañamiento técnico orienta exclusivamente la homologación de información espacial y alfanumérica al modelo LADM-COL POT. No contempla orientación de índole jurídica ni temática. Las decisiones normativas y conceptuales son responsabilidad de cada equipo temático.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="doc-footer">
+  <span>Agendas de Homologación LADM-COL POT · Revisión y Ajuste · Municipio de Popayán, Cauca · 2025</span>
+  <span>CProfesional LADM COL Ing. Juan Carlos Dueñas Ramírez</span>
+</div>
+
+</body>
+</html>
